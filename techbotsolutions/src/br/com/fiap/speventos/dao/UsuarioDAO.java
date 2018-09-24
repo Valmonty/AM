@@ -7,16 +7,39 @@ import java.sql.ResultSet;
 import br.com.fiap.speventos.beans.Usuario;
 import br.com.fiap.speventos.conexao.Conexao;
 
+/**
+ * Classe para manipular a tabela T_SGE_USUARIO 
+ * Possui métodos para: cadastrar, editar, remover
+ * @author Techbot Solutions
+ * @version 1.0
+ * @since 1.0
+ * @see UsuarioBO
+ * @see Usuario
+ */
 public class UsuarioDAO {
 
 	private Connection con;
 	private PreparedStatement stmt;
 	private ResultSet rs;
 
+	/**
+	 * Método construtor que estabelece a comunicacao com o banco de dados
+	 * @author Techbot Solutions
+	 * @param nao possui parametros
+	 * @return nao ha retorno
+	 * @throws Exception - Chamada da excecao Exception
+	 */
 	public UsuarioDAO() throws Exception {
 		con = new Conexao().conectar();
 	}
 
+	/**
+	 * Metodo para adicionar um registro na tabela T_SGE_USUARIO
+	 * @author Techbot Solutions
+	 * @param usuario recebe um objeto do tipo Usuario (Beans)
+	 * @return um int com a quantidade de registros inseridos
+	 * @throws Exception - Chamada da excecao Exception
+	 */
 	public String cadastrar(Usuario usuario) throws Exception {
 
 		stmt = con.prepareStatement("INSERT INTO T_SGE_USUARIO "
@@ -27,13 +50,17 @@ public class UsuarioDAO {
 		stmt.setString(2, usuario.getEmail());
 		stmt.setString(3, usuario.getSenha());
 		stmt.setString(4,usuario.getNome());
-		
-		stmt.executeUpdate();
 
-		return "Cadastro Realizado";
+		return stmt.executeUpdate() + "Cadastro Realizado";
 	}
 
-	//ver como fazer
+	/**
+	 * Metodo para editar um registro na tabela T_SGE_USUARIO
+	 * @author Techbot Solutions
+	 * @param usuario recebe um objeto do tipo Usuario
+	 * @return um int com a quantidade de registros editados
+	 * @throws Exception - Chamada da excecao Exception
+	 */
 	public int editar(Usuario usuario) throws Exception {
 
 		stmt = con.prepareStatement("UPDATE T_SGE_USUARIO SET CD_USUARIO=?, "
@@ -48,6 +75,14 @@ public class UsuarioDAO {
 		return stmt.executeUpdate();
 	}
 
+	/**
+	 * Metodo para logar, consulta por email e senha
+	 * um registro na tabela T_SGE_USUARIO 
+	 * @author Techbot Solutions
+	 * @param email recebe uma String e senha recebe uma String
+	 * @return um objeto do tipo Usuario
+	 * @throws Exception - Chamada da excecao Exception
+	 */
 	public Usuario logar(String email, String senha) throws Exception {
 		stmt = con.prepareStatement("SELECT CD_USUARIO, DS_EMAIL, DS_SENHA, "
 				+ "NM_USUARIO FROM T_SGE_USUARIO "
@@ -65,12 +100,18 @@ public class UsuarioDAO {
 					rs.getString("DS_SENHA"),
 					rs.getString("NM_USUARIO")
 					);
-			}
-
-		return new Usuario();
+		} else {
+			return new Usuario();
+		}
 	}
 
-	//CHECAR SE ESTA CERTO
+	/**
+	 * Metodo para remover um registro na tabela T_SGE_USUARIO
+	 * @author Techbot Solutions
+	 * @param codigoUsuario recebe um objeto do tipo int
+	 * @return um int com o numero de itens removidos
+	 * @throws Exception - Chamada da excecao Exception
+	 */
 	public int remover(int cd_usuario) throws Exception {
 		stmt = con.prepareStatement("DELETE FROM T_SGE_USUARIO "
 				+ "WHERE T_SGE_USUARIO.CD_USUARIO = ?");
@@ -79,6 +120,13 @@ public class UsuarioDAO {
 		return stmt.executeUpdate();
 	}
 
+	/**
+	 * Metodo que fecha a comunicacao com o banco de dados
+	 * @author Techbot Solutions
+	 * @param nao possui parametros
+	 * @return nao ha retorno
+	 * @throws Exception - Chamada da excecao Exception
+	 */
 	public void fechar() throws Exception {
 		con.close();
 	}

@@ -9,16 +9,42 @@ import java.util.List;
 import br.com.fiap.speventos.beans.PessoaJuridica;
 import br.com.fiap.speventos.conexao.Conexao;
 
+/**
+ * Classe para manipular a tabela T_SGE_PESSOA_JURIDICA
+ * Possui metodos para: cadastrar, consultarPorCodigo, consultarPorCodigoEvento, editar, remover
+ * @author Techbot Solutions
+ * @version 1.0
+ * @since 1.0
+ * @see PessoaJuridica
+ * @see PessoaJuridicaBO
+ * @see Usuario
+ * @see Pessoa
+ *
+ */
 public class PessoaJuridicaDAO {
 
 	private Connection con;
 	private PreparedStatement stmt;
 	private ResultSet rs;
 
+	/**
+	  * Metodo construtor que estabelece a comunicacao com o banco de dados
+	  * @author Techbot Solutions
+	  * @param nao possui parametros
+	  * @return nao ha retorno
+	  * @throws Exception - Chamada da excecao Exception
+	  */
 	public PessoaJuridicaDAO() throws Exception {
 		con = new Conexao().conectar();
 	}
 
+	/**
+	  * Metodo para adicionar um registro na tabela T_SGE_PESSOA_JURIDICA
+	  * @author Techbot Solutions
+	  * @param pessoaJuridica recebe um objeto do tipo PessoaJuridica (Beans)
+	  * @return um int com a quantidade de registros inseridos
+	  * @throws Exception - Chamada da excecao Exception
+	  */
 	public String cadastrar(PessoaJuridica pj) throws Exception {
 
 		stmt = con.prepareStatement("INSERT INTO T_SGE_PESSOA_JURIDICA "
@@ -34,6 +60,14 @@ public class PessoaJuridicaDAO {
 		return "Cadastro Realizado";
 	}
 
+	/**
+	  * Metodo para consultar por codigo de usuario um registro na tabela 
+	  * T_SGE_USUARIO, T_SGE_PESSOA, T_SGE_PESSOA_JURIDICA
+	  * @author Techbot Solutions
+	  * @param codigoUsuario recebe um objeto do tipo int
+	  * @return um objeto PessoaJuridica
+	  * @throws Exception - Chamada da excecao Exception
+	  */
 	public PessoaJuridica consultarPorCodigo(int codigo) throws Exception {
 
 		stmt = con.prepareStatement(
@@ -64,7 +98,14 @@ public class PessoaJuridicaDAO {
 		}
 	}
 
-	public List<PessoaJuridica> consultarPorNome(int nome) throws Exception {
+	/**
+	  * Metodo para consultar por codigo de usuario registros na tabela T_SGE_USUARIO, T_SGE_PESSOA, T_SGE_PESSOA_JURIDICA
+	  * @author Techbot Solutions
+	  * @param codigoUsuario recebe um objeto do tipo int
+	  * @return uma lista com objetos do tipo PessoaJuridica
+	  * @throws Exception - Chamada da excecao Exception
+	  */
+	public List<PessoaJuridica> consultarPorNome(String nome) throws Exception {
 
 		List<PessoaJuridica> lista = new ArrayList<PessoaJuridica>();
 
@@ -92,6 +133,13 @@ public class PessoaJuridicaDAO {
 		return lista;
 	}
 
+	/**
+	 * Metodo para editar um registro na tabela T_SGE_PESSOA_JURIDICA
+	 * @author Techbot Solutions
+	 * @param pessoaJuridica recebe um objeto do tipo PessoaJuridica
+	 * @return um int com a quantidade de registros editados
+	 * @throws Exception - Chamada da excecao Exception
+	 */
 	public int editar(PessoaJuridica pessoaJuridica) throws Exception {
 
 		stmt = con.prepareStatement(
@@ -105,7 +153,14 @@ public class PessoaJuridicaDAO {
 
 		return stmt.executeUpdate();
 	}
-	//CHECAR SE ESTÁ CERTO
+	
+	/**
+	 * Metodo para remover um registro na tabela T_SGE_PESSOA_JURIDICA
+	 * @author Techbot Solutions
+	 * @param codigoUsuario recebe um objeto do tipo int
+	 * @return um int com o numero de itens removidos
+	 * @throws Exception - Chamada da excecao Exception
+	 */
 	public int remover(int cd_usuario) throws Exception {
 		stmt = con.prepareStatement("DELETE FROM T_SGE_PESSOA_JURIDICA "
 				+ "WHERE T_SGE_PESSOA_FISICA.CD_USUARIO = ?");
@@ -114,6 +169,14 @@ public class PessoaJuridicaDAO {
 		return stmt.executeUpdate();
 	}
 
+	/**
+	  * Metodo que fecha a comunicacao com o banco de dados
+	  * @author Techbot Solutions
+	  * @param nao possui parametros
+	  * @return nao ha retorno
+	  * @throws Exception - Chamada da excecao Exception
+	  */
+	
 	public void fechar() throws Exception {
 		con.close();
 	}

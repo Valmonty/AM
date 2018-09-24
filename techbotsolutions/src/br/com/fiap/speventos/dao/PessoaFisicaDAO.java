@@ -9,16 +9,42 @@ import java.util.List;
 import br.com.fiap.speventos.beans.PessoaFisica;
 import br.com.fiap.speventos.conexao.Conexao;
 
+/**
+ * Classe para manipular a tabela T_SGE_PESSOA_FISICA
+ * Possui metodos para: cadastrar, consultarPorCodigo, consultarPorCodigoEvento, editar, remover
+ * @author Techbot Solutions
+ * @version 1.0
+ * @since 1.0
+ * @see PessoaFisica
+ * @see PessoaFisicaBO
+ * @see Usuario
+ * @see Pessoa
+ *
+ */
 public class PessoaFisicaDAO {
 
 	private Connection con;
 	private PreparedStatement stmt;
 	private ResultSet rs;
 
+	/**
+	  * Metodo construtor que estabelece a comunicacao com o banco de dados
+	  * @author Techbot Solutions
+	  * @param nao possui parametros
+	  * @return nao ha retorno
+	  * @throws Exception - Chamada da excecao Exception
+	  */
 	public PessoaFisicaDAO() throws Exception {
 		con = new Conexao().conectar();
 	}
 
+	/**
+	  * Metodo para adicionar um registro na tabela T_SGE_PESSOA_FISICA
+	  * @author Techbot Solutions
+	  * @param pessoaFisica recebe um objeto do tipo PessoaFisica (Beans)
+	  * @return um int com a quantidade de registros inseridos
+	  * @throws Exception - Chamada da excecao Exception
+	  */
 	public String cadastrar(PessoaFisica pf) throws Exception {
 
 		stmt = con.prepareStatement("INSERT INTO T_SGE_PESSOA_FISICA "
@@ -32,11 +58,17 @@ public class PessoaFisicaDAO {
 		stmt.setString(4, "NR_RG_DIGITO");
 		stmt.setString(5, "DS_GENERO");
 		stmt.setString(6, "DT_NASCIMENTO");
-		stmt.executeQuery();
 
-		return "Cadastro Realizado";
+		return stmt.executeQuery() + "Cadastro Realizado";
 	}
 
+	/**
+	  * Metodo para consultar por codigo de usuario um registro na tabela T_SGE_USUARIO, T_SGE_PESSOA, T_SGE_PESSOA_FISICA
+	  * @author Techbot Solutions
+	  * @param codigoUsuario recebe um objeto do tipo int
+	  * @return um objeto PessoaFisica
+	  * @throws Exception - Chamada da excecao Exception
+	  */
 	public PessoaFisica consultarPorCodigo(int codigo) throws Exception {
 
 		stmt = con.prepareStatement(
@@ -71,7 +103,15 @@ public class PessoaFisicaDAO {
 		}
 	}
 
-	public List<PessoaFisica> consultarPorNome(int nome) throws Exception {
+	/**
+	  * Metodo para consultar por codigo de usuario registros na tabela 
+	  * T_SGE_USUARIO, T_SGE_PESSOA, T_SGE_PESSOA_FISICA
+	  * @author Techbot Solutions
+	  * @param codigoUsuario recebe um objeto do tipo int
+	  * @return uma lista com objetos do tipo PessoaFisica
+	  * @throws Exception - Chamada da excecao Exception
+	  */
+	public List<PessoaFisica> consultarPorNome(String nome) throws Exception {
 
 		List<PessoaFisica> lista = new ArrayList<PessoaFisica>();
 
@@ -103,6 +143,13 @@ public class PessoaFisicaDAO {
 		return lista;
 	}
 
+	/**
+	 * Metodo para editar um registro na tabela T_SGE_PESSOA_FISICA
+	 * @author Techbot Solutions
+	 * @param pessoaFisica recebe um objeto do tipo PessoaFisica
+	 * @return um int com a quantidade de registros editados
+	 * @throws Exception - Chamada da excecao Exception
+	 */
 	public int editar(PessoaFisica pessoaFisica) throws Exception {
 
 		stmt = con.prepareStatement(
@@ -119,7 +166,14 @@ public class PessoaFisicaDAO {
 
 		return stmt.executeUpdate();
 	}
-	//CHECAR SE ESTÁ CERTO
+
+	/**
+	 * Metodo para remover um registro na tabela T_SGE_PESSOA_FISICA
+	 * @author Techbot Solutions
+	 * @param codigoUsuario recebe um objeto do tipo int
+	 * @return um int com o numero de itens removidos
+	 * @throws Exception - Chamada da excecao Exception
+	 */
 	public int remover(int cd_usuario) throws Exception {
 		stmt = con.prepareStatement("DELETE FROM T_SGE_PESSOA_FISICA "
 				+ "WHERE T_SGE_PESSOA_FISICA.CD_USUARIO = ?");
@@ -128,6 +182,13 @@ public class PessoaFisicaDAO {
 		return stmt.executeUpdate();
 	}
 
+	/**
+	  * Metodo que fecha a comunicacao com o banco de dados
+	  * @author Techbot Solutions
+	  * @param nao possui parametros
+	  * @return nao ha retorno
+	  * @throws Exception - Chamada da excecao Exception
+	  */
 	public void fechar() throws Exception {
 		con.close();
 	}

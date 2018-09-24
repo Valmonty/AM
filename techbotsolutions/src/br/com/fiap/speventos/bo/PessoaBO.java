@@ -7,7 +7,7 @@ public class PessoaBO {
 
 	public static String novoPessoa(Pessoa pessoa) throws Exception{
 
-		if(pessoa.getCodigoUsuario()<=0) {
+		if(pessoa.getCodigoUsuario()<1 || pessoa.getCodigoUsuario() > 99999) {
 			return "Código inválido";
 		}
 
@@ -42,7 +42,7 @@ public class PessoaBO {
 	
 	public static String edicaoPessoa(Pessoa pessoa) throws Exception{
 
-		if(pessoa.getCodigoUsuario()<1) {
+		if(pessoa.getCodigoUsuario()<1 || pessoa.getCodigoUsuario() > 99999) {
 			return "Código inválido";
 		}
 
